@@ -2,6 +2,7 @@ package com.leodev.api.services;
 
 import com.leodev.api.entities.User;
 import com.leodev.api.repositories.UserRepository;
+import com.leodev.api.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserService {
     }
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
     public User insert(User user){
         return repository.save(user);
