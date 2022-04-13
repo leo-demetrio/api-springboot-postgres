@@ -2,8 +2,11 @@ package com.leodev.api.services;
 
 import com.leodev.api.entities.User;
 import com.leodev.api.repositories.UserRepository;
+import com.leodev.api.services.exceptions.DatabaseException;
 import com.leodev.api.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +29,14 @@ public class UserService {
         return repository.save(user);
     }
     public void delete(Long id){
-        repository.deleteById(id);
+
+        try{
+            repository.deleteById(id);
+        }catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(id);
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
     public User update(long id, User obj){
         User entity = repository.getOne(id);
