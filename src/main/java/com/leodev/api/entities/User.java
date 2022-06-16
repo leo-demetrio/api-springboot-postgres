@@ -1,6 +1,8 @@
 package com.leodev.api.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "tb_user")
 public class User implements Serializable {
 
