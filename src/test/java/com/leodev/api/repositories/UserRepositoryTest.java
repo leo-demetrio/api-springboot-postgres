@@ -62,10 +62,31 @@ class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("Delete remove User when success")
+    void delete_RemoveUser_WhenSuccessFull(){
+        User user = UserCreator.createUserValid();
+        userRepository.delete(user);
+        Optional<User> optionalUser = userRepository.findById(user.getId());
+        assertThat(optionalUser).isEmpty();
+    }
+
+    @Test
     @DisplayName("FindById search User when success")
     void findById_SearchUser_WhenSuccessFull(){
-        User user = UserCreator.createUserValid();
+        User user = UserCreator.createUser();
+        userRepository.save(user);
+        String expectedName = "Leo";
         Optional<User> optionalUser = userRepository.findById(user.getId());
-        assertThat(optionalUser.isEmpty()).isTrue();
+        assertAll(
+                () -> assertThat(optionalUser.get()).isNotNull(),
+                () -> assertThat(optionalUser.get().getName()).isNotNull(),
+                () -> assertThat(optionalUser.get().getName()).isNotEmpty(),
+                () -> assertThat(optionalUser.get().getName()).isEqualTo(expectedName),
+                () -> assertThat(optionalUser.get().getEmail()).isNotNull(),
+                () -> assertThat(optionalUser.get().getPhone()).isNotNull(),
+                () -> assertThat(optionalUser.get().getPassword()).isNotNull(),
+                () -> assertThat(optionalUser.get()).isNotNull(),
+                () -> assertThat(optionalUser.get()).isNotNull()
+        );
     }
 }
